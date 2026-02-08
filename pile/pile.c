@@ -59,11 +59,50 @@ int depiler(maillon *p) {
 
 /* 2 - Pille de taille bornée */
 
-int N = 10; // Taille de la pile
+const int TAILLE = 10; // Taille de la pile
 
 typedef struct {
-  int data[10]; // Taille arbitraire
-  int sommet;   // indice choisi pour faire office de sommet
+  int *tab;   // Taille arbitraire
+  int sommet; // indice choisi pour faire office de sommet
+  int taille;
 } pile;
 
-bool estVide(pile *p) { return true; }
+bool estVideStat(pile *p) { return p->taille = 0; }
+
+bool estPleineStat(pile *p) { return p->taille = TAILLE; }
+
+pile *creeVideStat(int *tab) {
+  pile *p = malloc(sizeof(pile));
+
+  p->tab = tab;
+  p->sommet = 0;
+  p->taille = 0;
+
+  return p;
+}
+
+void empilerStat(pile *p, int e) {
+  assert(!estPleineStat(p));
+
+  if (estVideStat(p)) {
+    p->tab[p->sommet] = e;
+    p->taille = 0;
+  } else {
+    p->tab[p->sommet + 1] = e;
+    p->sommet++;
+    p->taille++;
+  }
+}
+
+int depilerStat(pile *p) {
+  assert(!estVideStat(p));
+
+  int val = p->tab[p->sommet];
+
+  if (p->taille != 1) {
+    p->sommet--;
+  }
+
+  p->taille--;
+  return val;
+}
